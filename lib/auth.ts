@@ -1,6 +1,9 @@
 import { SignJWT, jwtVerify } from "jose"
 import { prisma } from "@/lib/db"
-import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies"
+
+interface CookieStore {
+  get(name: string): { value: string } | undefined
+}
 
 const secret = new TextEncoder().encode(
   process.env.VENDOR_JWT_SECRET ?? "furnish_dev_secret"
@@ -23,7 +26,7 @@ export async function verifyToken(token: string): Promise<{ vendorId: number } |
   }
 }
 
-export async function getVendorSession(cookies: ReadonlyRequestCookies) {
+export async function getVendorSession(cookies: CookieStore) {
   const token = cookies.get("vendor_session")?.value
   if (!token) return null
   const payload = await verifyToken(token)
