@@ -3,11 +3,21 @@ import { PrismaNeon } from "@prisma/adapter-neon"
 import { Pool, neonConfig } from "@neondatabase/serverless"
 import ws from "ws"
 
-// Use WebSocket for Neon serverless in Node.js runtime
 neonConfig.webSocketConstructor = ws
 
 function createPrismaClient() {
-  const connectionString = process.env.POSTGRES_PRISMA_URL!
+  // Try all env var names Vercel's Neon integration may use
+  const connectionString =
+    process.env.POSTGRES_PRISMA_URL ||
+    process.env.DATABASE_URL ||
+    process.env.POSTGRES_URL
+
+  if (!connectionString) {
+    throw new Error(
+      "No database connection string found. Set POSTGRES_PRISMA_URL, DATABASE_URL, or POSTGRES_URL."
+    )
+  }
+
   const pool = new Pool({ connectionString })
   const adapter = new PrismaNeon(pool)
   return new PrismaClient({ adapter })

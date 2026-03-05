@@ -73,7 +73,7 @@ export default function FurniturePanel({ open, onClose }: Props) {
   useEffect(() => {
     fetch("/api/furniture")
       .then(r => r.json())
-      .then(data => setFurniture(data))
+      .then(data => { if (Array.isArray(data)) setFurniture(data) })
       .catch(() => {})
   }, [])
 
