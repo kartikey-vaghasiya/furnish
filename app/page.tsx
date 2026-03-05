@@ -1,7 +1,8 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import dynamic from "next/dynamic"
+import Link from "next/link"
 import { Sofa, ShoppingBag } from "lucide-react"
 import { useCart } from "@/context/CartContext"
 import { useScene } from "@/context/SceneContext"
@@ -14,8 +15,14 @@ const RoomViewer = dynamic(() => import("@/components/RoomViewer"), { ssr: false
 export default function Home() {
   const [panelOpen, setPanelOpen] = useState(false)
   const [cartOpen, setCartOpen]   = useState(false)
-  // Rotation state for each placed item: instanceId → degrees
   const [rotations, setRotations] = useState<Record<string, number>>({})
+  const [vendorLoggedIn, setVendorLoggedIn] = useState(false)
+
+  useEffect(() => {
+    fetch("/api/vendor/me")
+      .then(r => { if (r.ok) setVendorLoggedIn(true) })
+      .catch(() => {})
+  }, [])
 
   const { totalCount }          = useCart()
   const { selectedInstanceId }  = useScene()
@@ -39,6 +46,13 @@ export default function Home() {
           Furnish
         </span>
 
+        <div className="flex items-center gap-3">
+          <Link
+            href={vendorLoggedIn ? "/vendor/dashboard" : "/vendor/login"}
+            className="text-[11px] font-bold tracking-[0.15em] uppercase text-[#888] hover:text-[#1A1410] transition-colors"
+          >
+            {vendorLoggedIn ? "Dashboard" : "Vendor"}
+          </Link>
         <button
           onClick={() => setCartOpen(true)}
           className="relative flex items-center gap-2 text-[11px] font-bold tracking-[0.15em] uppercase text-[#1A1410] bg-[#F5F0E8] hover:bg-[#EDE5D8] rounded-full px-4 py-2 transition-colors cursor-pointer"
@@ -51,6 +65,7 @@ export default function Home() {
             </span>
           )}
         </button>
+        </div>
       </header>
 
       {/* ── Main ───────────────────────────────────────── */}

@@ -1,10 +1,10 @@
 "use client"
 
-import { Suspense, useEffect } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { Canvas } from "@react-three/fiber"
 import { OrbitControls, useGLTF, Environment } from "@react-three/drei"
 import { X, ShoppingCart } from "lucide-react"
-import { FURNITURE, FurnitureItem } from "@/lib/furniture"
+import { FurnitureItem } from "@/lib/furniture"
 import { useScene } from "@/context/SceneContext"
 import { useCart } from "@/context/CartContext"
 
@@ -12,8 +12,6 @@ function ModelPreview({ model }: { model: string }) {
   const { scene } = useGLTF(model)
   return <primitive object={scene.clone(true)} />
 }
-
-FURNITURE.forEach(f => useGLTF.preload(f.model))
 
 interface CardProps {
   item: FurnitureItem
@@ -70,6 +68,14 @@ interface Props {
 
 export default function FurniturePanel({ open, onClose }: Props) {
   const { totalCount } = useCart()
+  const [furniture, setFurniture] = useState<FurnitureItem[]>([])
+
+  useEffect(() => {
+    fetch("/api/furniture")
+      .then(r => r.json())
+      .then(data => setFurniture(data))
+      .catch(() => {})
+  }, [])
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose() }
@@ -104,7 +110,7 @@ export default function FurniturePanel({ open, onClose }: Props) {
 
         {/* Cards */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
-          {FURNITURE.map(item => (
+          {furniture.map(item => (
             <FurnitureCard key={item.id} item={item} onPlace={onClose} />
           ))}
         </div>

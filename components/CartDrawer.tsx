@@ -13,7 +13,12 @@ interface Props {
 export default function CartDrawer({ open, onClose }: Props) {
   const { items, remove, clear, totalPrice } = useCart()
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
+    await fetch("/api/order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ items: items.map(i => ({ id: i.id, quantity: i.quantity })) }),
+    }).catch(() => {})
     clear()
     onClose()
     toast.success("Order confirmed — we'll be in touch shortly.")
