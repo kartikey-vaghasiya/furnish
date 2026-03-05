@@ -32,9 +32,10 @@ export async function POST(req: NextRequest) {
 
   try {
     const filename = `${Date.now()}-${file.name.replace(/\s+/g, "_")}`
-    const blob = await put(`models/${filename}`, file, { access: "public" })
+    const blob = await put(`models/${filename}`, file, { access: "private" })
+    const modelUrl = `/api/models?url=${encodeURIComponent(blob.url)}`
     const item = await prisma.furniture.create({
-      data: { name, price, model: blob.url, vendorId: vendor.id },
+      data: { name, price, model: modelUrl, vendorId: vendor.id },
     })
     return NextResponse.json(item, { status: 201 })
   } catch (e) {
