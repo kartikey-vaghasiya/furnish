@@ -72,9 +72,12 @@ export default function BookDesignExpertModal({ open, onClose }: Props) {
           <div className="py-8 text-center">
             <div className="mb-4 text-5xl">✓</div>
             <p className="text-lg font-semibold text-[#1A1410] mb-2">Booking Confirmed!</p>
-            <p className="text-sm text-[#999]">
-              Our design expert will contact you shortly at {formData.phone}
-            </p>
+            <div className="space-y-2 text-sm text-[#999]">
+              <p><strong className="text-[#1A1410]">Time:</strong> {formData.slot}</p>
+              <p><strong className="text-[#1A1410]">Name:</strong> {formData.name}</p>
+              <p><strong className="text-[#1A1410]">Phone:</strong> {formData.phone}</p>
+              <p className="mt-4">Our design expert will contact you shortly.</p>
+            </div>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
