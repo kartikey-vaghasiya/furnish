@@ -1,12 +1,9 @@
 "use client"
 
-import { useState, useCallback, useEffect } from "react"
+import { useState, useCallback } from "react"
 import dynamic from "next/dynamic"
-import Link from "next/link"
-import { Sofa, ShoppingBag } from "lucide-react"
-import { useCart } from "@/context/CartContext"
+import { Sofa } from "lucide-react"
 import { useScene } from "@/context/SceneContext"
-import CartDrawer from "@/components/CartDrawer"
 import FurniturePanel from "@/components/FurniturePanel"
 import ItemControlPanel from "@/components/ItemControlPanel"
 
@@ -14,17 +11,8 @@ const RoomViewer = dynamic(() => import("@/components/RoomViewer"), { ssr: false
 
 export default function Home() {
   const [panelOpen, setPanelOpen] = useState(false)
-  const [cartOpen, setCartOpen]   = useState(false)
   const [rotations, setRotations] = useState<Record<string, number>>({})
-  const [vendorLoggedIn, setVendorLoggedIn] = useState(false)
 
-  useEffect(() => {
-    fetch("/api/vendor/me")
-      .then(r => { if (r.ok) setVendorLoggedIn(true) })
-      .catch(() => {})
-  }, [])
-
-  const { totalCount }          = useCart()
   const { selectedInstanceId }  = useScene()
 
   const handleRotationChange = useCallback((instanceId: string, deg: number) => {
@@ -89,8 +77,6 @@ export default function Home() {
           onRotationChange={handleRotationChange}
         />
       </div>
-
-      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
     </div>
   )
 }
