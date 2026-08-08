@@ -48,7 +48,7 @@ function FurnitureCard({ item, onPlace }: CardProps) {
       <div className="px-4 py-3 flex items-center justify-between gap-3">
         <div className="min-w-0">
           <p className="text-[13px] font-semibold text-[#1A1410] leading-tight truncate">{item.name}</p>
-          <p className="text-[11px] text-[#999] mt-0.5 font-medium">${item.price}</p>
+          <p className="text-[11px] text-[#999] mt-0.5 font-medium">₹{item.price.toLocaleString('en-IN')}</p>
         </div>
         <button
           onClick={() => { placeItem(item); onPlace() }}

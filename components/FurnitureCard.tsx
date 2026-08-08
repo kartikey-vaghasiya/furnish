@@ -60,7 +60,7 @@ export default function FurnitureCard({ item, index, onTryOut }: Props) {
           >
             {item.name}
           </h3>
-          <p className="text-sm text-muted-foreground tracking-wide">${item.price}</p>
+          <p className="text-sm text-muted-foreground tracking-wide">₹{item.price.toLocaleString('en-IN')}</p>
         </div>
 
         <button
