@@ -39,32 +39,18 @@ export default function Home() {
 
       {/* ── Navbar ─────────────────────────────────────── */}
       <header className="shrink-0 h-14 bg-white border-b border-[#EDE7DF] flex items-center justify-between px-8 z-40">
-        <span
-          style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400, letterSpacing: "0.22em", fontSize: "1.2rem" }}
-          className="uppercase text-[#1A1410] select-none"
-        >
-          Furnish
-        </span>
+        <img
+          src="/homecentre-logo.png"
+          alt="Furnish Logo"
+          className="h-12 object-contain"
+        />
 
         <div className="flex items-center gap-3">
-          <Link
-            href={vendorLoggedIn ? "/vendor/dashboard" : "/vendor/login"}
-            className="text-[11px] font-bold tracking-[0.15em] uppercase text-[#888] hover:text-[#1A1410] transition-colors"
+          <button
+            className="text-[11px] font-bold tracking-[0.15em] uppercase text-white bg-[#1A1410] hover:bg-[#3D3026] rounded-full px-5 py-2 transition-colors cursor-pointer"
           >
-            {vendorLoggedIn ? "Dashboard" : "Vendor"}
-          </Link>
-        <button
-          onClick={() => setCartOpen(true)}
-          className="relative flex items-center gap-2 text-[11px] font-bold tracking-[0.15em] uppercase text-[#1A1410] bg-[#F5F0E8] hover:bg-[#EDE5D8] rounded-full px-4 py-2 transition-colors cursor-pointer"
-        >
-          <ShoppingBag className="w-[15px] h-[15px]" strokeWidth={2} />
-          Cart
-          {totalCount > 0 && (
-            <span className="absolute -top-2 -right-2 w-5 h-5 bg-[#1A1410] text-white text-[9px] rounded-full flex items-center justify-center font-bold">
-              {totalCount}
-            </span>
-          )}
-        </button>
+            Book Design Expert
+          </button>
         </div>
       </header>
 
